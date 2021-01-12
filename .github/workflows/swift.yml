@@ -1,0 +1,32 @@
+name: Swift
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Build iOS
+      run: xcodebuild -project Phoenix.xcodeproj -target "Phoenix (iOS)"
+    
+    - name: Build macOS
+      run: xcodebuild -project Phoenix.xcodeproj -target "Phoenix (macOS)"
+      
+    - uses: actions/upload-artifact@v2
+      with:
+        name: Phoenix-iOS.app
+        path: ./build/Release-iphoneos/Phoenix.app
+        
+    - uses: actions/upload-artifact@v2
+      with:
+        name: Phoenix-macOS.app
+        path: ./build/Release/Phoenix.app
+    
